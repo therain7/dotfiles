@@ -1,0 +1,32 @@
+let mapleader=" "
+
+""" Plugins
+Plug 'machakann/vim-highlightedyank'
+Plug 'preservim/nerdtree'
+
+""" Mappings
+nmap <s-h> <Action>(PreviousTab)
+nmap <s-l> <Action>(NextTab)
+map <m-j> <Action>(MoveStatementDown)
+map <m-k> <Action>(MoveStatementUp)
+
+nmap gl <Action>(ShowErrorDescription)
+
+nmap <leader>c :close<CR>
+nmap <leader>w <Action>(SaveDocument)
+nmap <leader>r <Action>(Run)
+nmap <leader>R <Action>(RenameElement)
+nmap <leader>z <Action>(ToggleDistractionFreeMode)
+
+""" Common settings
+set number relativenumber
+set scrolloff=5
+set incsearch
+
+set ignorecase
+set smartcase
+
+""" Idea specific settings
+set ideajoin
+set ideastatusicon=gray
+set idearefactormode=keep
