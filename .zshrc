@@ -112,9 +112,11 @@ source $ZSH/oh-my-zsh.sh
 
 export PATH="$PATH:/Users/$USER/.local/bin"
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"
+
 export LANG="en_US.UTF-8"
-export EDITOR='lvim'
 export CC=$(which clang)
+export EDITOR="lvim"
 
 alias lg='lazygit'
 alias py='python3'
@@ -126,7 +128,6 @@ alias cat='bat'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 eval "$(zoxide init zsh)"
-eval $(thefuck --alias)
 
 # opam configuration
 [[ ! -r /Users/therain/.opam/opam-init/init.zsh ]] || source /Users/therain/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
