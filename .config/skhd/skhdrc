@@ -56,5 +56,5 @@ alt - space : yabai -m window --toggle float
 $hyper - f : yabai -m window --toggle zoom-fullscreen
 
 # toggle focus follows mouse
-$hyper - 0x21 : yabai -m config focus_follows_mouse autofocus
+$hyper - 0x21 : yabai -m config focus_follows_mouse autoraise
 $hyper - p : yabai -m config focus_follows_mouse off
