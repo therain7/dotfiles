@@ -116,6 +116,7 @@ export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"
 
 export LANG="en_US.UTF-8"
 export CC=$(which clang)
+export CXX=$(which clang++)
 export EDITOR="lvim"
 
 alias lg='lazygit'
