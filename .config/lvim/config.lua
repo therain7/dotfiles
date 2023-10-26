@@ -77,7 +77,8 @@ linters.setup {
     {
         name = "mypy",
         args = { "--strict" }
-    }
+    },
+    { name = "cppcheck" }
 }
 
 
