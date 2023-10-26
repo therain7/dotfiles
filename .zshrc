@@ -122,6 +122,7 @@ export EDITOR="lvim"
 alias lg='lazygit'
 alias py='python3'
 alias o='open'
+alias lmrst='(){ limactl stop $1 && limactl start $1 ;}'
 
 alias rmf='rm -rf'
 alias l='exa -al'
