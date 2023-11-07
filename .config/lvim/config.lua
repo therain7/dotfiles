@@ -41,7 +41,7 @@ lvim.builtin.telescope.defaults.mappings = {
 }
 
 
-lvim.lsp.installer.setup.automatic_installation.exclude = { "ocamllsp" }
+lvim.lsp.installer.setup.automatic_installation.exclude = { "ocamllsp", "clangd" }
 
 vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "clangd" })
 vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "kotlin_language_server" })
