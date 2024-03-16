@@ -4,23 +4,20 @@
     "workbench.settings.openDefaultSettings": true,
     "workbench.settings.useSplitJSON": true,
     "editor.fontFamily": "JetBrainsMono Nerd Font",
-    "editor.fontSize": 15,
-    "terminal.integrated.fontSize": 15,
-    "markdown.preview.fontSize": 15,
+    "editor.fontSize": 16,
+    "terminal.integrated.fontSize": 16,
+    "markdown.preview.fontSize": 16,
     "editor.formatOnSave": true,
     "workbench.iconTheme": "ayu",
     "git.confirmSync": false,
     "python.defaultInterpreterPath": "/opt/homebrew/bin/python3",
     "python.formatting.provider": "black",
-    "python.formatting.blackArgs": [
-        "--line-length",
-        "95"
-    ],
+    "python.formatting.blackArgs": ["--line-length", "95"],
     "cmake.configureOnOpen": true,
     "code-runner.executorMap": {
         "python": "$pythonPath -u $fullFileName"
     },
     "code-runner.clearPreviousOutput": true,
     "code-runner.saveFileBeforeRun": true,
-    "workbench.colorTheme": "Atom One Light",
+    "workbench.colorTheme": "Atom One Light"
 }
