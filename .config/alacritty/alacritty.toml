@@ -1,7 +1,7 @@
 import = ["/Users/therain/.config/alacritty/snazzy.toml"]
 
 [font]
-size = 16.0
+size = 18.0
 
 [font.bold]
 family = "Hack Nerd Font"
