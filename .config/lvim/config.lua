@@ -45,7 +45,7 @@ lvim.lsp.installer.setup.automatic_installation.exclude =
 { "ocamllsp", "clangd", "kotlin_language_server", "texlab", "rust_analyzer" }
 
 vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers,
-    { "clangd", "kotlin_language_server", "texlab", "rust_analyzer" })
+    { "clangd", "kotlin_language_server", "texlab", "rust_analyzer", "pyright", "ruff" })
 
 lvim.lsp.automatic_configuration.skipped_servers = vim.tbl_filter(function(server)
     return server ~= "emmet_ls"
@@ -55,14 +55,6 @@ end, lvim.lsp.automatic_configuration.skipped_servers)
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
     {
-        name = "black",
-        args = { "--line-length", "95" }
-    },
-    {
-        name = "isort",
-        args = { "--profile", "black" }
-    },
-    {
         name = "prettier",
         args = { "--tab-width", "4" }
     },
@@ -70,14 +62,6 @@ formatters.setup {
 
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
-    {
-        name = "flake8",
-        args = { "--max-line-length", "95" }
-    },
-    {
-        name = "mypy",
-        args = { "--strict" }
-    },
     { name = "cppcheck" }
 }
 
