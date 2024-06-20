@@ -32,7 +32,7 @@ alias lm='lima'
 
 alias rmf='rm -rf'
 alias l='eza -al'
-alias cat='bat'
+alias cat='bat --theme=Dracula'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 eval "$(zoxide init zsh)"
