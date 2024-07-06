@@ -2,6 +2,8 @@
 # caps lock is mapped to hyper
 .alias $hyper rctrl + ralt + rcmd
 
+$hyper - return : sh ~/raycast_local/alacritty-new.sh
+
 # navigate
 $hyper - h : yabai -m window --focus west
 $hyper - l : yabai -m window --focus east
