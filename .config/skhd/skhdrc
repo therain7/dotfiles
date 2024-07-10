@@ -52,7 +52,7 @@ $hyper - u : yabai -m space --rotate 90
 $hyper - i : yabai -m space --balance
 
 # toggle window float
-alt - space : yabai -m window --toggle float
+$hyper + lshift - space : yabai -m window --toggle float
 
 # make window fullscreen
 $hyper - f : yabai -m window --toggle zoom-fullscreen
