@@ -14,7 +14,7 @@ local clangd_flags = {
 }
 
 local opts = {
-    cmd = { "/opt/homebrew/opt/llvm/bin/clangd", unpack(clangd_flags) },
+    cmd = { "clangd", unpack(clangd_flags) },
 }
 
 require("lvim.lsp.manager").setup("clangd", opts)
