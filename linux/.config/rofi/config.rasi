@@ -1,0 +1,27 @@
+configuration {
+  modi: "drun,powermenu:~/.config/rofi/powermenu.lua";
+  
+  me-accept-entry: "MousePrimary";
+  me-select-entry: "";
+  show-icons: true;
+  icon-theme: "ePapirus";
+  application-fallback-icon: "run-build";
+  
+  drun-display-format: " {name} ";
+  matching: "fuzzy";
+  scroll-method: 0;
+  disable-history: false;
+
+  display-drun: "Apps";
+  display-powermenu: "Power";
+
+  sort: true;
+  sorting-method: "fzf";
+
+  timeout {
+    action: "kb-cancel";
+    delay: 30;
+  }
+}
+
+@theme "gruvbox.rasi"
