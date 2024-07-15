@@ -1,4 +1,5 @@
-import = ["/Users/therain/.config/alacritty/snazzy.toml"]
+import = ["~/.config/alacritty/snazzy.toml"]
+# import = ["~/.config/alacritty/mac.toml"]
 
 [font]
 size = 18.0
@@ -20,9 +21,7 @@ family = "Hack Nerd Font"
 style = "Regular"
 
 [window]
-decorations = "buttonless"
 dynamic_padding = true
-option_as_alt = "Both"
 
 [window.padding]
 x = 2
