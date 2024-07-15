@@ -1,5 +1,6 @@
 import = ["~/.config/alacritty/snazzy.toml"]
 # import = ["~/.config/alacritty/mac.toml"]
+# import = ["~/.config/alacritty/linux.toml"]
 
 [font]
 size = 18.0

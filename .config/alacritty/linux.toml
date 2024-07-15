@@ -1,0 +1,4 @@
+[keyboard]
+bindings = [
+  { key = "E", mods = "Super", action = "ToggleViMode" },
+]
