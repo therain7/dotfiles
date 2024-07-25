@@ -1,5 +1,7 @@
 set {
+  # long press capslock is mapped to Mod4 = $mod
   $mod Mod4
+
   $left h
   $down j
   $up k
