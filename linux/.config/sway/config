@@ -26,10 +26,6 @@ output * {
   bg ~/.config/wallpaper.png fill
 }
 
-output "DP-1" {
-  scale 2
-}
-
 smart_borders on
 gaps inner 6
 
