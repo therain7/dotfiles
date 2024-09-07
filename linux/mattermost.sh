@@ -1,3 +1,3 @@
 #!/bin/sh
 
-nohup mattermost-desktop --enable-features=UseOzonePlatform --ozone-platform=wayland >&/dev/null &!
+nohup flatpak run com.mattermost.Desktop --enable-features=UseOzonePlatform --ozone-platform=wayland >&/dev/null &!
