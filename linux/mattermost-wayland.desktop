@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Mattermost Wayland
+Exec=flatpak run com.mattermost.Desktop --enable-features=UseOzonePlatform --ozone-platform=wayland %U
+Terminal=false
+Type=Application
+Icon=mattermost-desktop
+StartupWMClass=Mattermost
+Comment=Mattermost
+MimeType=x-scheme-handler/mattermost;
+Categories=Network;InstantMessaging;
