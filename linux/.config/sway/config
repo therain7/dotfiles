@@ -11,7 +11,10 @@ set {
 
   $menu rofi -show drun | swaymsg
   $power rofi -show powermenu | swaymsg
+  $lock swaylock -f
 }
+
+bindswitch --reload --locked lid:on exec $lock
 
 exec_always autotiling
 exec clipse -listen
