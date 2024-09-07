@@ -34,7 +34,6 @@ input {
     tap enabled
     natural_scroll enabled
     middle_emulation enabled
-    dwt disabled
   }
 
   type:touch {
