@@ -23,6 +23,7 @@ export LANG="en_US.UTF-8"
 export CC=$(which clang)
 export CXX=$(which clang++)
 export EDITOR="lvim"
+export BAT_THEME="Dracula"
 
 alias lg='lazygit'
 alias py='python3'
@@ -32,7 +33,7 @@ alias lm='lima'
 
 alias rmf='rm -rf'
 alias l='eza -al'
-alias cat='bat --theme=Dracula'
+alias cat='bat'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 eval "$(zoxide init zsh)"
