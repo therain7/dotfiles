@@ -10,16 +10,16 @@ require("lvim.lsp.manager").setup("ruff_lsp", {
 require("lvim.lsp.manager").setup("pyright", {
     settings = {
         pyright = {
-            -- Using Ruff's import organizer
+            -- Use Ruff's import organizer
             disableOrganizeImports = true,
+
+            disableTaggedHints = true,
         },
         python = {
             analysis = {
-                typeCheckingMode = "standard",
-
-                -- Ignore all files for analysis
-                -- to exclusively use Ruff for linting
-                ignore = { "*" }
+                diagnosticSeverityOverrides = {
+                    reportUndefinedVariable = "none",
+                },
             },
         },
     },
