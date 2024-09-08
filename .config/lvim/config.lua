@@ -97,54 +97,9 @@ lvim.plugins = {
         opts = {},
     },
 
-    -- supercharge your Rust experience in Neovim
-    {
-        'mrcjkb/rustaceanvim',
-        version = '^4', -- Recommended
-        ft = { 'rust' },
-    },
-
     -- colorschemes
     { "catppuccin/nvim",       name = "catppuccin" },
     { "rose-pine/neovim",      name = "rose-pine" }
-}
-
-vim.g.rustaceanvim = {
-    tools = {
-        runnables = {
-            use_telescope = true,
-        },
-        hover_actions = {
-            border = "rounded",
-        },
-        on_initialized = function()
-            vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter", "CursorHold", "InsertLeave" }, {
-                pattern = { "*.rs" },
-                callback = function()
-                    local _, _ = pcall(vim.lsp.codelens.refresh)
-                end,
-            })
-        end,
-    },
-    server = {
-        on_attach = function(client, bufnr)
-            require("lvim.lsp").common_on_attach(client, bufnr)
-            vim.keymap.set("n", "K", function() vim.cmd.RustLsp { 'hover', 'actions' } end, { buffer = bufnr })
-        end,
-
-        capabilities = require("lvim.lsp").common_capabilities(),
-        settings = {
-            ["rust-analyzer"] = {
-                lens = {
-                    enable = true,
-                },
-                checkOnSave = {
-                    enable = true,
-                    command = "clippy",
-                },
-            },
-        },
-    },
 }
 
 -- vim.o.background = "light"
