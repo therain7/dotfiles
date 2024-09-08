@@ -32,7 +32,7 @@ alias lmrst='(){ limactl stop $1 && limactl start $1 ;}'
 alias lm='lima'
 
 alias rmf='rm -rf'
-alias l='eza -al'
+alias l='eza -al --group-directories-first'
 alias cat='bat'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
