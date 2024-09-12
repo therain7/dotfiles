@@ -15,26 +15,23 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-export PATH="/Users/$USER/.local/bin:$PATH"
+export PATH=~/.local/bin:$PATH
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"
 
 export LANG="en_US.UTF-8"
-export CC=$(which clang)
-export CXX=$(which clang++)
 export EDITOR="lvim"
 export BAT_THEME="Dracula"
 
-alias lg='lazygit'
-alias py='python3'
-alias o='open'
-alias lmrst='(){ limactl stop $1 && limactl start $1 ;}'
-alias lm='lima'
-
-alias rmf='rm -rf'
-alias l='eza -al --group-directories-first'
-alias cat='bat'
-alias rgi='rg -i'
+alias lg="lazygit"
+alias py="python3"
+alias o="open"
+alias lmrst="(){ limactl stop $1 && limactl start $1 ;}"
+alias lm="lima"
+alias rmf="rm -rf"
+alias l="eza -al --group-directories-first"
+alias cat="bat"
+alias rgi="rg -i"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 eval "$(zoxide init zsh)"
