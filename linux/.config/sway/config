@@ -16,6 +16,8 @@ set {
 
 bindswitch --reload --locked lid:on exec $lock
 
+exec swayidle -w before-sleep "exec $lock"
+
 exec_always autotiling
 exec clipse -listen
 exec mako
