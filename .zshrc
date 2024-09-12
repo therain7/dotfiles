@@ -34,6 +34,7 @@ alias lm='lima'
 alias rmf='rm -rf'
 alias l='eza -al --group-directories-first'
 alias cat='bat'
+alias rgi='rg -i'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 eval "$(zoxide init zsh)"
