@@ -42,7 +42,7 @@ lvim.builtin.telescope.defaults.mappings = {
 
 
 lvim.lsp.installer.setup.automatic_installation.exclude =
-{ "ocamllsp", "clangd", "kotlin_language_server", "texlab", "rust_analyzer" }
+{ "ocamllsp", "clangd", "kotlin_language_server", "texlab", "rust_analyzer", "hls" }
 
 vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers,
     { "clangd", "kotlin_language_server", "texlab", "rust_analyzer", "pyright", "ruff" })
