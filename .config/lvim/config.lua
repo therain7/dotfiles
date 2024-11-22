@@ -8,7 +8,7 @@ vim.diagnostic.config({
     virtual_text = false,
 })
 
-lvim.format_on_save.enabled = true
+lvim.format_on_save.enabled = false
 
 
 -- keymappings
