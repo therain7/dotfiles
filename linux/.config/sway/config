@@ -150,7 +150,7 @@ client.focused_inactive $darkgray $darkgray $accent $darkgray $darkgray
 client.unfocused        $darkgray $darkgray $accent $darkgray $darkgray
 client.urgent           $red $red $accent $red $red
 
-xwayland disable
+# xwayland disable
 
 bar swaybar_command waybar
 
