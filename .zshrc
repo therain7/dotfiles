@@ -22,16 +22,20 @@ export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"
 export LANG="en_US.UTF-8"
 export EDITOR="lvim"
 export BAT_THEME="Dracula"
+export LIMA_WORKDIR=/home/therain
 
 alias lg="lazygit"
 alias py="python3"
+
 alias o="open"
-alias lmrst="(){ limactl stop $1 && limactl start $1 ;}"
-alias lm="lima"
+alias pdf="open -a sioyek"
+
 alias rmf="rm -rf"
 alias l="eza -al --group-directories-first"
 alias cat="bat"
 alias rgi="rg -i"
+
+alias lm="lima"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 eval "$(zoxide init zsh)"
