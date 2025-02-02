@@ -4,29 +4,6 @@ yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 sudo yabai --load-sa
 
 
-# configure spaces
-yabai -m space 1 --label code
-# yabai -m rule --add app="^Alacritty$" space=code
-
-yabai -m space 2 --label web
-# yabai -m rule --add app="^Safari$" space=web
-
-yabai -m space 3 --label social
-yabai -m rule --add app="^Telegram$" space=social
-
-yabai -m space 4 --label music
-yabai -m rule --add app="^Spotify$" space=music
-
-yabai -m space 5 --label mail
-yabai -m rule --add app="^Mail$" space=mail
-
-yabai -m space 8 --label stack
-yabai -m config --space stack layout stack
-
-yabai -m space 9 --label float
-yabai -m config --space float layout float
-
-
 # exclude some apps & windows from begin managed
 yabai -m rule --add app="^(LuLu|Calculator|Software Update|Dictionary|System Preferences|System Settings|App Store)$" manage=off
 yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
