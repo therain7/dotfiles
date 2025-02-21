@@ -1,6 +1,6 @@
 set {
-  # long press capslock is mapped to Mod4 = $mod
-  $mod Mod4
+  # long press capslock is mapped to RIGHTCTRL = Mod5 = $mod
+  $mod Mod5
 
   $left h
   $down j
@@ -47,7 +47,7 @@ input {
 
   type:keyboard {
     xkb_layout "us,ru"
-    xkb_options "grp:ctrl_space_toggle"
+    xkb_options "grp:win_space_toggle"
   }
 }
 

@@ -1,4 +1,4 @@
-# caps2esc is modified to map long press caps to Mod4
+# caps2esc is modified to map long press caps to RIGHTCTRL
 - JOB: intercept -g $DEVNODE | caps2esc -m 1 | uinput -d $DEVNODE
   DEVICE:
     EVENTS:
