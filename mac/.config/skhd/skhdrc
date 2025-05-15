@@ -2,7 +2,8 @@
 # caps lock is mapped to hyper
 .alias $hyper rctrl + ralt + rcmd
 
-$hyper - return : sh ~/alacritty.sh
+$hyper - return : alacritty msg create-window
+$hyper + lshift - return : alacritty msg create-window -e ssh lima
 
 # navigate
 $hyper - h : yabai -m window --focus west
