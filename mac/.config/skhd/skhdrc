@@ -3,7 +3,7 @@
 .alias $hyper rctrl + ralt + rcmd
 
 $hyper - return : alacritty msg create-window
-$hyper + lshift - return : alacritty msg create-window -e /opt/homebrew/bin/limactl shell main
+$hyper + lshift - return : alacritty msg create-window -e /opt/homebrew/bin/mosh --no-init lima
 
 # navigate
 $hyper - h : yabai -m window --focus west
