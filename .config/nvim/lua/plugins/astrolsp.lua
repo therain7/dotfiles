@@ -10,7 +10,7 @@ return {
         ignore_filetypes = { "c" },
       },
     },
-    servers = {},
+    servers = { "ocamllsp" },
     mappings = {
       n = {
         gr = {
