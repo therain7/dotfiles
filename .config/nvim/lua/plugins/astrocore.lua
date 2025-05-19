@@ -10,6 +10,7 @@ return {
         tabstop = 4,
         shiftwidth = 4,
         list = true,
+        scrolloff = 20,
       },
     },
     diagnostics = {
