@@ -50,15 +50,15 @@ for_window [title="clipse-alacritty"] floating enable, resize set 80ppt 80ppt, m
 bindsym {
   $mod+Return exec $term
   $mod+space exec $menu
-  $mod+Shift+q exec $power
-
   $mod+q kill
-
-  $mod+Shift+r reload
-
   $mod+v exec ~/.config/sway/clipse.sh
+  $mod+i exec sway-balance-workspace
+
   $mod+period exec makoctl dismiss -a
   $mod+equal output "eDP-1" toggle
+
+  $mod+Shift+q exec $power
+  $mod+Shift+r reload
 }
 
 bindsym --locked {
