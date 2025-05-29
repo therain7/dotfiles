@@ -7,7 +7,7 @@ return {
     formatting = {
       format_on_save = {
         enabled = true,
-        ignore_filetypes = { "c" },
+        ignore_filetypes = { "c", "cpp" },
       },
     },
     servers = { "ocamllsp" },
