@@ -1,42 +1,20 @@
 set {
   # long press capslock is mapped to RIGHTCTRL = Mod5 = $mod
   $mod Mod5
-
-  $left h
-  $down j
-  $up k
-  $right l
-
-  $resize_factor 40px
-
-  $menu rofi -show drun | swaymsg
-  $power rofi -show powermenu | swaymsg
   $lock swaylock -f
 }
 
 bindswitch --reload --locked lid:on exec $lock
-
 exec swayidle -w before-sleep "exec $lock"
 
 exec autotiling-rs
 exec clipse -listen
 exec mako
 
-set $term "alacritty msg create-window || alacritty"
-
-default_border pixel 2
-default_floating_border pixel 2
-
-output * {
-  bg ~/.config/wallpaper.png fill
-}
-
-smart_borders on
-gaps inner 6
-
 input {
   type:touchpad {
     natural_scroll enabled
+    tap enabled
   }
 
   type:keyboard {
@@ -45,44 +23,56 @@ input {
   }
 }
 
+floating_modifier $mod normal
 for_window [title="clipse-alacritty"] floating enable, resize set 80ppt 80ppt, move position center
 
 bindsym {
-  $mod+Return exec $term
-  $mod+space exec $menu
+  $mod+Return exec "alacritty msg create-window || alacritty"
+  $mod+space exec rofi -show drun | swaymsg
   $mod+q kill
   $mod+v exec ~/.config/sway/clipse.sh
-  $mod+i exec sway-balance-workspace
 
   $mod+period exec makoctl dismiss -a
-  $mod+equal output "eDP-1" toggle
-
-  $mod+Shift+q exec $power
+  $mod+Shift+q exec rofi -show powermenu | swaymsg
   $mod+Shift+r reload
 }
 
 bindsym --locked {
   XF86MonBrightnessUp exec light -A 5
   XF86MonBrightnessDown exec light -U 5
+
+  $mod+equal output "eDP-1" toggle
 }
 
-floating_modifier $mod normal
+set {
+  $left h
+  $right l
+  $down j
+  $up k
+
+  $resize_factor 40px
+}
 
 bindsym {
+  $mod+i exec sway-balance-workspace
+
   $mod+$left focus left
+  $mod+$right focus right
   $mod+$down focus down
   $mod+$up focus up
-  $mod+$right focus right
 
   $mod+a move left
+  $mod+d move right
   $mod+s move down
   $mod+w move up
-  $mod+d move right
 
   $mod+Shift+$left resize grow width $resize_factor
   $mod+Shift+$right resize shrink width $resize_factor
   $mod+Shift+$down resize shrink height $resize_factor
   $mod+Shift+$up resize grow height $resize_factor
+
+  $mod+f fullscreen
+  $mod+Shift+space floating toggle
 }
 
 bindsym {
@@ -109,29 +99,28 @@ bindsym {
   $mod+Shift+0 move container to workspace number 10
 }
 
-bindsym {
-  $mod+f fullscreen
-  $mod+Shift+space floating toggle
-}
-
 set {
   $screenshot "Screenshot: [s]creen [w]window [r]egion"
   $screenshot-cmd ~/.config/sway/screenshot.sh
 }
 
 mode $screenshot {
-  bindsym --to-code {
+  bindsym {
     s mode "default", exec $screenshot-cmd screen
-    w mode "default", exec $screenshot-cmd window 
-    r mode "default", exec $screenshot-cmd region 
+    w mode "default", exec $screenshot-cmd window
+    r mode "default", exec $screenshot-cmd region
 
     Return mode "default"
     Escape mode "default"
-    $mod+x mode "default"
   }
 }
+bindsym $mod+x mode $screenshot
 
-bindsym --to-code $mod+Shift+s mode $screenshot
+bar swaybar_command waybar
+default_border pixel 2
+default_floating_border pixel 2
+smart_borders on
+gaps inner 6
 
 set {
   $accent #ebdbb2
@@ -144,9 +133,9 @@ client.focused_inactive $darkgray $darkgray $accent $darkgray $darkgray
 client.unfocused        $darkgray $darkgray $accent $darkgray $darkgray
 client.urgent           $red $red $accent $red $red
 
-# xwayland disable
-
-bar swaybar_command waybar
+output * {
+  bg ~/.config/wallpaper.png fill
+}
 
 output "LG Electronics LG HDR 4K 0x00028A6C" {
   scale 1.5
