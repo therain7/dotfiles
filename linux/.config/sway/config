@@ -64,7 +64,7 @@ bindsym {
 
   $mod+v exec ~/.config/sway/clipse.sh
   $mod+period exec makoctl dismiss -a
-  $mod+equal exec ~/.config/sway/iotoggle.sh
+  $mod+equal output "eDP-1" toggle
 }
 
 bindsym --locked {
