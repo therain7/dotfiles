@@ -18,7 +18,7 @@ bindswitch --reload --locked lid:on exec $lock
 
 exec swayidle -w before-sleep "exec $lock"
 
-exec_always autotiling
+exec autotiling-rs
 exec clipse -listen
 exec mako
 
@@ -36,13 +36,7 @@ gaps inner 6
 
 input {
   type:touchpad {
-    tap enabled
     natural_scroll enabled
-    middle_emulation enabled
-  }
-
-  type:touch {
-    events disabled
   }
 
   type:keyboard {
