@@ -4,3 +4,4 @@ end
 
 set -x BAT_THEME Dracula
 set -x EDITOR nvim
+set -x XDG_CONFIG_HOME $HOME/.config
