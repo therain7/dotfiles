@@ -11,8 +11,3 @@ set smarttab
 set shiftround
 set autoindent
 set smartindent
-
-noremap <Up> <Nop>
-noremap <Down> <Nop>
-noremap <Left> <Nop>
-noremap <Right> <Nop>
