@@ -1,0 +1,21 @@
+set keyboardlayoutforce true
+set newtab about:blank
+
+bind H tabprev
+bind L tabnext
+
+unbind <C-f>
+bind J scrollpage 0.5
+bind K scrollpage -0.5
+
+bind [ back
+bind ] forward
+
+unbind d
+bind x tabclose
+
+bind / fillcmdline find
+bind ? fillcmdline find -?
+bind n findnext 1
+bind N findnext -1
+bind --mode=normal <Escape> composite mode normal ; hidecmdline ; nohlsearch
