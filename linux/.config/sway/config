@@ -14,7 +14,6 @@ exec mako
 input {
   type:touchpad {
     natural_scroll enabled
-    tap enabled
   }
 
   type:keyboard {
