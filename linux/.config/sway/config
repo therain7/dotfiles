@@ -34,6 +34,9 @@ bindsym --to-code {
   $mod+period exec makoctl dismiss -a
   $mod+Shift+q exec rofi -show powermenu | swaymsg
   $mod+Shift+r reload
+
+  # alacritty vi mode hack
+  $mod+e exec wtype -M ctrl -P e
 }
 
 bindsym --to-code --locked {

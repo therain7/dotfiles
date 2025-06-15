@@ -19,13 +19,20 @@ style = "Regular"
 
 [window]
 dynamic_padding = true
+decorations = "buttonless"
+option_as_alt = "Both"
 
 [window.padding]
 x = 2
 y = 2
 
-[general]
-import = [
- "~/.config/alacritty/snazzy.toml",
- "~/.config/alacritty/linux.toml"
+[keyboard]
+bindings = [
+  { key = "E", mods = "Control", action = "ToggleViMode" },
+  { mode = "Vi", key = "Escape", action = "ToggleViMode" },
+  { mode = "Vi", key = "J", mods = "Shift", action = "ScrollHalfPageDown" },
+  { mode = "Vi", key = "K", mods = "Shift", action = "ScrollHalfPageUp" },
 ]
+
+[general]
+import = ["~/.config/alacritty/snazzy.toml"]

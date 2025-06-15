@@ -8,6 +8,8 @@ $hyper + lshift - return : alacritty msg create-window -e /opt/homebrew/bin/fish
 cmd - h : true
 cmd - w : true
 
+$hyper - e : skhd -k "ctrl - e"
+
 $hyper - h : yabai -m window --focus west
 $hyper - l : yabai -m window --focus east
 $hyper - j : yabai -m window --focus south
