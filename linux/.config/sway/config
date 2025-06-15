@@ -45,7 +45,7 @@ bindsym --to-code {
   $mod+Shift+r reload
 
   # alacritty vi mode hack
-  $mod+e exec wtype -M ctrl -P e
+  $mod+e exec wtype -M alt -P e
 }
 
 bindsym --to-code --locked {

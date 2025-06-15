@@ -28,7 +28,7 @@ y = 2
 
 [keyboard]
 bindings = [
-  { key = "E", mods = "Control", action = "ToggleViMode" },
+  { key = "E", mods = "Alt", action = "ToggleViMode" },
   { mode = "Vi", key = "Escape", action = "ToggleViMode" },
   { mode = "Vi", key = "J", mods = "Shift", action = "ScrollHalfPageDown" },
   { mode = "Vi", key = "K", mods = "Shift", action = "ScrollHalfPageUp" },
