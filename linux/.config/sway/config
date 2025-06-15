@@ -144,4 +144,8 @@ output "LG Electronics LG HDR 4K 0x00028A6C" {
   scale 1.5
 }
 
+output "Acer Technologies CB272U E3 R40604F524209" {
+  mode "2560x1440@99.946Hz"
+}
+
 include /etc/sway/config.d/*
