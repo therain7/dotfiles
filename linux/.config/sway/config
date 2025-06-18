@@ -3,8 +3,8 @@ set $cmd Mod4
 bindsym --to-code {
   $cmd+a exec wtype -M ctrl -P a
   $cmd+x exec wtype -M ctrl -P x
-  $cmd+c exec ~/.config/sway/copy.sh
-  $cmd+v exec wtype -M ctrl -P v
+  $cmd+c exec ~/.config/sway/copy-paste.sh copy
+  $cmd+v exec ~/.config/sway/copy-paste.sh paste
 }
 
 set {
