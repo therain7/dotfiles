@@ -135,17 +135,17 @@ bar swaybar_command waybar
 default_border pixel 2
 default_floating_border pixel 2
 smart_borders on
-gaps inner 6
+gaps inner 8
 
 set {
-  $accent #ebdbb2
-  $red #cc241d
-  $darkgray #3c3836
+  $accent #f2cdcd
+  $red #f38ba8
+  $dark #313244
 }
 
-client.focused          $accent $accent $darkgray $accent $accent
-client.focused_inactive $darkgray $darkgray $accent $darkgray $darkgray
-client.unfocused        $darkgray $darkgray $accent $darkgray $darkgray
+client.focused          $accent $accent $dark $accent $accent
+client.focused_inactive $dark $dark $accent $dark $dark
+client.unfocused        $dark $dark $accent $dark $dark
 client.urgent           $red $red $accent $red $red
 
 output * {

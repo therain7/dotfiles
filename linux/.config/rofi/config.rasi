@@ -1,12 +1,17 @@
 configuration {
+  kb-accept-entry: "Return,KP_Enter";
+  kb-remove-to-eol: "";
+  kb-row-down: "J,Ctrl+j,Alt+j,Down";
+  kb-row-up: "K,Ctrl+k,Alt+k,Up";
+
   modi: "drun,powermenu:~/.config/rofi/powermenu.lua";
-  
+
   me-accept-entry: "MousePrimary";
   me-select-entry: "";
   show-icons: true;
   icon-theme: "ePapirus";
   application-fallback-icon: "run-build";
-  
+
   drun-display-format: " {name} ";
   matching: "fuzzy";
   scroll-method: 0;
@@ -24,4 +29,4 @@ configuration {
   }
 }
 
-@theme "gruvbox.rasi"
+@theme "style.rasi"

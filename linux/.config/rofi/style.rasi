@@ -1,12 +1,11 @@
 * {
-  accentcolor: #ebdbb2;
-  backgroundcolor: #282828;
+  accentcolor: #f5e0dc;
+  backgroundcolor: #1e1e2e;
   separatorcolor: transparent;
-  foregroundcolor: #fbf1c7;
-  selectioncolor: #8ec07c;
+  selectioncolor: #f38ba8;
 
   background-color: transparent;
-  text-color: @foregroundcolor;
+  text-color: @accentcolor;
 }
 
 window {
@@ -15,7 +14,7 @@ window {
   background-color: @backgroundcolor;
   border-color: @accentcolor;
   border: 2;
-  padding: 16 14;
+  padding: 20 28;
   width: 640;
 }
 
@@ -57,5 +56,5 @@ element-icon {
 }
 
 element-text {
-  padding: 4 4 4 12;
+  padding: 4 4 4 4;
 }

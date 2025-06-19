@@ -1,56 +1,47 @@
 {
-  "modules-left": ["sway/workspaces", "sway/window", "sway/mode"],
-  "modules-right": ["sway/language", "pulseaudio", "backlight", "network", "battery", "clock", "tray"],
-  "clock": {
-    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-    "format": "{:%H:%M}"
+  "position": "bottom",
+  "margin-bottom": 8,
+  "margin-left": 8,
+  "margin-right": 8,
+
+  "modules-left": ["sway/workspaces", "sway/window"],
+  "modules-right": ["tray", "network", "pulseaudio", "battery", "clock"],
+
+  "sway/workspaces": {
+    "disable-scroll": true,
+    "disable-click": true
   },
-  "backlight": {
-    "format": "{percent}% {icon}",
-    "format-icons": ["", "", "", "", "", "", "", "", ""],
+
+  "tray": {
+    "icon-size": 14,
+    "spacing": 14
   },
-  "battery": {
-    "states": {
-      "warning": 30,
-      "critical": 15
-    },
-    "format": "{capacity}% {icon}",
-    "format-charging": "{capacity}% 󰢝",
-    "format-plugged": "{capacity}% ",
-    "format-alt": "{time} {icon}",
-    "format-icons": ["", "", "", "", ""]
-  },
-  "pulseaudio": {
-    "format": "{volume}% {icon}",
-    "format-bluetooth": "{volume}% {icon} {format_source}",
-    "format-bluetooth-muted": "󰝟 {icon} {format_source}",
-    "format-muted": "󰝟 {format_source}",
-    "format-icons": {
-      "headphone": "",
-      "hands-free": "󱠰",
-      "headset": "󰋎",
-      "phone": "",
-      "portable": "",
-      "car": "",
-      "default": ["", "", ""]
-    },
-    "on-click": "pavucontrol"
-  },
+
   "network": {
     "format": "{ifname}",
-    "format-wifi": "Connected ",
-    "format-ethernet": "{ipaddr}/{cidr} 󰈀",
-    "format-disconnected": "Disconnected 󱛅", //An empty format will hide the module.
-    "tooltip-format": "{ifname} via {gwaddr} 󰛳",
-    "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
-    "tooltip-format-ethernet": "{ifname} ",
+    "format-wifi": "Connected",
+    "format-ethernet": "{ipaddr}/{cidr}",
+    "format-disconnected": "Disconnected",
+    "tooltip-format": "{ifname} via {gwaddr}",
+    "tooltip-format-wifi": "{essid} ({signalStrength}%)",
+    "tooltip-format-ethernet": "{ifname}",
     "tooltip-format-disconnected": "Disconnected",
     "max-length": 50
   },
-  "sway/workspaces": {
-    "disable-scroll": true
+
+  "pulseaudio": {
+    "format": "{volume}p",
+    "format-bluetooth": "{volume}bt",
+    "format-muted": "{volume}m",
+    "on-click": "pavucontrol"
   },
-  "sway/language": {
-    "format": "{short}"
-  }
+
+  "battery": {
+    "format": "{capacity}p",
+    "format-plugged": "{capacity}c"
+  },
+
+  "clock": {
+    "format": "{:%H:%M}"
+  },
 }

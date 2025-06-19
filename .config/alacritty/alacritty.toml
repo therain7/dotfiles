@@ -35,4 +35,4 @@ bindings = [
 ]
 
 [general]
-import = ["~/.config/alacritty/snazzy.toml"]
+import = ["~/.config/alacritty/catppuccin.toml"]
