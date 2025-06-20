@@ -38,7 +38,8 @@
 
   "battery": {
     "format": "{capacity}p",
-    "format-plugged": "{capacity}c"
+    "format-plugged": "{capacity}c",
+    "format-charging": "{capacity}c"
   },
 
   "clock": {
