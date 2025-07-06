@@ -160,4 +160,8 @@ output "Acer Technologies CB272U E3 R40604F524209" {
   mode "2560x1440@99.946Hz"
 }
 
+output "Acer Technologies CB242Y D3 54030C1954232" {
+  mode "1920x1080@100.087Hz"
+}
+
 include /etc/sway/config.d/*
