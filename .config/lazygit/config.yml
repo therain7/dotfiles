@@ -1,18 +1,17 @@
 git:
-    paging:
-        colorArg: always
-        pager: delta --dark --paging=never
-
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never
 customCommands:
-    - key: "<c-P>"
-      description: "Force push to a specific remote repository"
-      context: "global"
-      loadingText: "Pushing ..."
-      prompts:
-          - type: "menuFromCommand"
-            title: "Which remote repository to push to?"
-            command: bash -c "git remote --verbose | grep '/.* (push)'"
-            filter: '(?P<remote>.*)\s+(?P<url>.*) \(push\)'
-            valueFormat: "{{ .remote }}"
-            labelFormat: "{{ .remote | bold | cyan }} {{ .url }}"
-      command: "git push --force {{index .PromptResponses 0}}"
+  - key: "<c-P>"
+    description: "Force push to a specific remote repository"
+    context: "global"
+    loadingText: "Pushing ..."
+    prompts:
+      - type: "menuFromCommand"
+        title: "Which remote repository to push to?"
+        command: bash -c "git remote --verbose | grep '/.* (push)'"
+        filter: '(?P<remote>.*)\s+(?P<url>.*) \(push\)'
+        valueFormat: "{{ .remote }}"
+        labelFormat: "{{ .remote | bold | cyan }} {{ .url }}"
+    command: "git push --force {{index .PromptResponses 0}}"
