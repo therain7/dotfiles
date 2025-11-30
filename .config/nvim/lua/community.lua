@@ -6,4 +6,5 @@ return {
   { import = "astrocommunity.pack.lua" },
   { import = "astrocommunity.pack.python-ruff" },
   { import = "astrocommunity.pack.cpp" },
+  { import = "astrocommunity.pack.json" },
 }
