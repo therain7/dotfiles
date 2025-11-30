@@ -9,7 +9,7 @@ configuration {
   me-accept-entry: "MousePrimary";
   me-select-entry: "";
   show-icons: true;
-  icon-theme: "ePapirus";
+  icon-theme: "Papirus";
   application-fallback-icon: "run-build";
 
   drun-display-format: " {name} ";
