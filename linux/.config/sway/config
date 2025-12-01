@@ -20,6 +20,7 @@ exec nm-applet
 exec autotiling-rs
 exec clipse -listen
 exec mako
+exec lxpolkit
 
 input {
   type:touchpad {
