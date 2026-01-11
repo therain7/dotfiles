@@ -42,7 +42,7 @@ bindsym --to-code {
   $mod+q kill
   $mod+v exec ~/.config/sway/clipse.sh
 
-  $mod+minus exec ~/.config/sway/airpods.sh
+  $mod+backslash exec ~/.config/sway/airpods.sh
 
   $mod+period exec makoctl dismiss -a
   $mod+Shift+q exec rofi -show powermenu | swaymsg
