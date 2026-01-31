@@ -1,5 +1,11 @@
 CompileFlags:
   Remove: ["-f*", "-m*"]
+  Add: -ferror-limit=0
 
 Diagnostics:
-  Suppress: ["bugprone-sizeof-expression"]
+  Suppress:
+    - "bugprone-sizeof-expression"
+    - "attribute_section_invalid_for_target"
+    - "asm_invalid_global_var_reg"
+    - "asm_unknown_register_name"
+    - "alias_not_supported_on_darwin"
