@@ -26,6 +26,16 @@ option_as_alt = "Both"
 x = 2
 y = 2
 
+# reduce flicker on macos tiling wm setup
+# by spawning tiny almost invisible windows
+# before they can be picked up by wm
+[window.position]
+x = 0
+y = 0
+[window.dimensions]
+columns = 1
+lines = 1
+
 [keyboard]
 bindings = [
   { key = "E", mods = "Alt", action = "ToggleViMode" },
