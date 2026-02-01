@@ -51,6 +51,6 @@ $hyper - i : yabai -m space --balance
 
 $hyper - q : yabai -m window --close
 $hyper + lshift - space : yabai -m window --toggle float
-$hyper - f : yabai -m window --toggle zoom-fullscreen
+$hyper - f : yabai -m window --toggle windowed-fullscreen
 
 $hyper - p : bash -c [[ $(yabai -m config mouse_follows_focus) = "off" ]] && yabai -m config mouse_follows_focus on || yabai -m config mouse_follows_focus off
