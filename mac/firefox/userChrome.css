@@ -5,3 +5,5 @@
 .titlebar-spacer {
   width: 2px !important;
 }
+
+#tabs-newtab-button { display:none !important; }
