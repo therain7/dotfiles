@@ -1,0 +1,47 @@
+From 42ccfda4aafb038497aca2daa46f425d4c249293 Mon Sep 17 00:00:00 2001
+From: Andrei <therain.i@yahoo.com>
+Date: Mon, 2 Feb 2026 23:07:25 +0300
+Subject: [PATCH] reduce flickering a bit
+
+---
+ src/window_manager.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/src/window_manager.c b/src/window_manager.c
+index b048552..4e69ea4 100644
+--- a/src/window_manager.c
++++ b/src/window_manager.c
+@@ -709,7 +709,7 @@ void window_manager_animate_window_list(struct window_capture *window_list, int
+     if (g_window_manager.window_animation_duration) {
+         window_manager_animate_window_list_async(window_list, window_count);
+     } else {
+-        for (int i = 0; i < window_count; ++i) {
++        for (int i = window_count - 1; i >= 0; --i) {
+             window_manager_set_window_frame(window_list[i].window, window_list[i].x, window_list[i].y, window_list[i].w, window_list[i].h);
+         }
+     }
+@@ -739,12 +739,7 @@ void window_manager_set_window_frame(struct window *window, float x, float y, fl
+     //
+ 
+     AX_ENHANCED_UI_WORKAROUND(window->application->ref, {
+-        // NOTE(asmvik): Due to macOS constraints (visible screen-area), we might need to resize the window *before* moving it.
+-        window_manager_resize_window(window, width, height);
+-
+         window_manager_move_window(window, x, y);
+-
+-        // NOTE(asmvik): Due to macOS constraints (visible screen-area), we might need to resize the window *after* moving it.
+         window_manager_resize_window(window, width, height);
+     });
+ }
+@@ -2382,6 +2377,8 @@ void window_manager_toggle_window_windowed_fullscreen(struct window *window)
+         window_set_flag(window, WINDOW_WINDOWED);
+         window->windowed_frame = window->frame;
+         CGRect bounds = display_bounds_constrained(did, true);
++
++        AX_ENHANCED_UI_WORKAROUND(window->application->ref, { window_manager_resize_window(window, bounds.size.width, bounds.size.height); });
+         window_manager_animate_window((struct window_capture) { .window = window, .x = bounds.origin.x, .y = bounds.origin.y, .w = bounds.size.width, .h = bounds.size.height });
+     }
+ }
+-- 
+2.52.0
+
