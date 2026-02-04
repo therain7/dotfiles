@@ -2,8 +2,7 @@
 # caps lock is mapped to hyper
 .alias $hyper rctrl + ralt + rcmd
 
-$hyper - return : alacritty msg create-window
-$hyper + lshift - return : alacritty msg create-window -e /opt/homebrew/bin/fish -c "ssh lima"
+$hyper - return : open -ga Ghostty $HOME
 
 cmd - h : true
 

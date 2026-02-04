@@ -1,0 +1,219 @@
+From 5949ee9ea7db572527c591682f4a4aa73e387454 Mon Sep 17 00:00:00 2001
+From: Andrei <therain.i@yahoo.com>
+Date: Thu, 5 Feb 2026 01:39:55 +0300
+Subject: [PATCH] force all new windows to be tiny and almost invisible on
+ spawn
+
+this reduces flickering on macos tiling wm setup as new windows
+are not really visible before they're picked up by WM
+---
+ .../Terminal/TerminalController.swift         | 186 +-----------------
+ 1 file changed, 4 insertions(+), 182 deletions(-)
+
+diff --git a/macos/Sources/Features/Terminal/TerminalController.swift b/macos/Sources/Features/Terminal/TerminalController.swift
+index 2e6021f56..d23cdaf67 100644
+--- a/macos/Sources/Features/Terminal/TerminalController.swift
++++ b/macos/Sources/Features/Terminal/TerminalController.swift
+@@ -201,77 +201,9 @@ class TerminalController: BaseTerminalController, TabGroupCloseCoordinator.Contr
+     ) -> TerminalController {
+         let c = TerminalController.init(ghostty, withBaseConfig: baseConfig)
+ 
+-        // Get our parent. Our parent is the one explicitly given to us,
+-        // otherwise the focused terminal, otherwise an arbitrary one.
+-        let parent: NSWindow? = explicitParent ?? preferredParent?.window
+-
+-        if let parent {
+-            if parent.styleMask.contains(.fullScreen) {
+-                // If our previous window was fullscreen then we want our new window to
+-                // be fullscreen. This behavior actually doesn't match the native tabbing
+-                // behavior of macOS apps where new windows create tabs when in native
+-                // fullscreen but this is how we've always done it. This matches iTerm2
+-                // behavior.
+-                c.toggleFullscreen(mode: .native)
+-            } else if ghostty.config.windowFullscreen {
+-                switch (ghostty.config.windowFullscreenMode) {
+-                case .native:
+-                    // Native has to be done immediately so that our stylemask contains
+-                    // fullscreen for the logic later in this method.
+-                    c.toggleFullscreen(mode: .native)
+-
+-                case .nonNative, .nonNativeVisibleMenu, .nonNativePaddedNotch:
+-                    // If we're non-native then we have to do it on a later loop
+-                    // so that the content view is setup.
+-                    DispatchQueue.main.async {
+-                        c.toggleFullscreen(mode: ghostty.config.windowFullscreenMode)
+-                    }
+-                }
+-            }
+-        }
+-
+-        // We're dispatching this async because otherwise the lastCascadePoint doesn't
+-        // take effect. Our best theory is there is some next-event-loop-tick logic
+-        // that Cocoa is doing that we need to be after.
+-        DispatchQueue.main.async {
+-            // Only cascade if we aren't fullscreen.
+-            if let window = c.window {
+-                if (!window.styleMask.contains(.fullScreen)) {
+-                    Self.lastCascadePoint = window.cascadeTopLeft(from: Self.lastCascadePoint)
+-                }
+-            }
+-
+-            c.showWindow(self)
+-
+-            // All new_window actions force our app to be active, so that the new
+-            // window is focused and visible.
+-            NSApp.activate(ignoringOtherApps: true)
+-        }
+-
+-        // Setup our undo
+-        if let undoManager = c.undoManager {
+-            undoManager.setActionName("New Window")
+-            undoManager.registerUndo(
+-                withTarget: c,
+-                expiresAfter: c.undoExpiration
+-            ) { target in
+-                // Close the window when undoing
+-                undoManager.disableUndoRegistration {
+-                    target.closeWindow(nil)
+-                }
+-
+-                // Register redo action
+-                undoManager.registerUndo(
+-                    withTarget: ghostty,
+-                    expiresAfter: target.undoExpiration
+-                ) { ghostty in
+-                    _ = TerminalController.newWindow(
+-                        ghostty,
+-                        withBaseConfig: baseConfig,
+-                        withParent: explicitParent)
+-                }
+-            }
+-        }
++        c.window?.setFrame(.init(x: 0, y: 0, width: 0, height: 0), display: false)
++        c.showWindow(self)
++        NSApp.activate(ignoringOtherApps: true)
+ 
+         return c
+     }
+@@ -281,117 +213,7 @@ class TerminalController: BaseTerminalController, TabGroupCloseCoordinator.Contr
+         from parent: NSWindow? = nil,
+         withBaseConfig baseConfig: Ghostty.SurfaceConfiguration? = nil
+     ) -> TerminalController? {
+-        // Making sure that we're dealing with a TerminalController. If not,
+-        // then we just create a new window.
+-        guard let parent,
+-              let parentController = parent.windowController as? TerminalController else {
+-            return newWindow(ghostty, withBaseConfig: baseConfig, withParent: parent)
+-        }
+-
+-        // If our parent is in non-native fullscreen, then new tabs do not work.
+-        // See: https://github.com/mitchellh/ghostty/issues/392
+-        if let fullscreenStyle = parentController.fullscreenStyle,
+-           fullscreenStyle.isFullscreen && !fullscreenStyle.supportsTabs {
+-            let alert = NSAlert()
+-            alert.messageText = "Cannot Create New Tab"
+-            alert.informativeText = "New tabs are unsupported while in non-native fullscreen. Exit fullscreen and try again."
+-            alert.addButton(withTitle: "OK")
+-            alert.alertStyle = .warning
+-            alert.beginSheetModal(for: parent)
+-            return nil
+-        }
+-
+-        // Create a new window and add it to the parent
+-        let controller = TerminalController.init(ghostty, withBaseConfig: baseConfig)
+-        guard let window = controller.window else { return controller }
+-
+-        // If the parent is miniaturized, then macOS exhibits really strange behaviors
+-        // so we have to bring it back out.
+-        if (parent.isMiniaturized) { parent.deminiaturize(self) }
+-
+-        // If our parent tab group already has this window, macOS added it and
+-        // we need to remove it so we can set the correct order in the next line.
+-        // If we don't do this, macOS gets really confused and the tabbedWindows
+-        // state becomes incorrect.
+-        //
+-        // At the time of writing this code, the only known case this happens
+-        // is when the "+" button is clicked in the tab bar.
+-        if let tg = parent.tabGroup,
+-           tg.windows.firstIndex(of: window) != nil {
+-            tg.removeWindow(window)
+-        }
+-
+-        // If we don't allow tabs then we create a new window instead.
+-        if (window.tabbingMode != .disallowed) {
+-            // Add the window to the tab group and show it.
+-            switch ghostty.config.windowNewTabPosition {
+-            case "end":
+-                // If we already have a tab group and we want the new tab to open at the end,
+-                // then we use the last window in the tab group as the parent.
+-                if let last = parent.tabGroup?.windows.last {
+-                    last.addTabbedWindow(window, ordered: .above)
+-                } else {
+-                    fallthrough
+-                }
+-
+-            case "current": fallthrough
+-            default:
+-                parent.addTabbedWindow(window, ordered: .above)
+-            }
+-        }
+-
+-        // We're dispatching this async because otherwise the lastCascadePoint doesn't
+-        // take effect. Our best theory is there is some next-event-loop-tick logic
+-        // that Cocoa is doing that we need to be after.
+-        DispatchQueue.main.async {
+-            // Only cascade if we aren't fullscreen and are alone in the tab group.
+-            if !window.styleMask.contains(.fullScreen) &&
+-                window.tabGroup?.windows.count ?? 1 == 1 {
+-                Self.lastCascadePoint = window.cascadeTopLeft(from: Self.lastCascadePoint)
+-            }
+-
+-            controller.showWindow(self)
+-            window.makeKeyAndOrderFront(self)
+-
+-            // We also activate our app so that it becomes front. This may be
+-            // necessary for the dock menu.
+-            NSApp.activate(ignoringOtherApps: true)
+-        }
+-
+-        // It takes an event loop cycle until the macOS tabGroup state becomes
+-        // consistent which causes our tab labeling to be off when the "+" button
+-        // is used in the tab bar. This fixes that. If we can find a more robust
+-        // solution we should do that.
+-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+-            controller.relabelTabs()
+-        }
+-
+-        // Setup our undo
+-        if let undoManager = parentController.undoManager {
+-            undoManager.setActionName("New Tab")
+-            undoManager.registerUndo(
+-                withTarget: controller,
+-                expiresAfter: controller.undoExpiration
+-            ) { target in
+-                // Close the tab when undoing
+-                undoManager.disableUndoRegistration {
+-                    target.closeTab(nil)
+-                }
+-
+-                // Register redo action
+-                undoManager.registerUndo(
+-                    withTarget: ghostty,
+-                    expiresAfter: target.undoExpiration
+-                ) { ghostty in
+-                    _ = TerminalController.newTab(
+-                        ghostty,
+-                        from: parent,
+-                        withBaseConfig: baseConfig)
+-                }
+-            }
+-        }
+-
+-        return controller
++        return newWindow(ghostty, withBaseConfig: baseConfig, withParent: parent)
+     }
+ 
+     //MARK: - Methods
+-- 
+2.52.0
+

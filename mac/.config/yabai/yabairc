@@ -23,6 +23,9 @@ yabai -m config mouse_drop_action swap
 
 yabai -m rule --add app="^(System Settings)$" manage=off
 
+# always focus new terminal windows
+yabai -m signal --add event=window_created app='Ghostty' action="osascript -e 'tell application \"Ghostty\" to activate'"
+
 # change focus on window destroy
 yabai -m signal --add event=window_destroyed action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus recent || yabai -m window --focus first"
 yabai -m signal --add event=application_terminated action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus recent || yabai -m window --focus first"
