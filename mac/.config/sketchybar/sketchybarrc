@@ -1,0 +1,81 @@
+#!/bin/bash
+
+# bar configuration
+bar=(
+    height=40
+    notch_offset=3
+    position=top
+    sticky=on
+    color=0x00000000
+)
+sketchybar --bar "${bar[@]}"
+
+# default items' config
+default=(
+    background.color=0x00000000
+    label.font="Hack Nerd Font:Regular:15"
+    label.color=0xffffffff
+    padding_left=5
+    padding_right=5
+    label.padding_left=5
+    label.padding_right=5
+    icon.drawing=off
+)
+sketchybar --default "${default[@]}"
+
+
+PLUGIN_DIR=$CONFIG_DIR/plugins
+
+# spaces
+for sid in {1..9}; do
+    space=(
+        label=$sid
+        script="$PLUGIN_DIR/spaces.sh"
+    )
+    sketchybar --add item s$sid left --set s$sid "${space[@]}" \
+      --subscribe s$sid space_change
+done
+
+
+# window title
+window=(
+    label.max_chars=64
+    script="$PLUGIN_DIR/window.sh"
+)
+sketchybar --add item window left --set window "${window[@]}" \
+    --add event window_focused --add event title_changed \
+    --subscribe window front_app_switched window_focused title_changed
+
+
+clock=(
+    update_freq=5
+    script="$PLUGIN_DIR/clock.sh"
+)
+sketchybar --add item clock right --set clock "${clock[@]}"
+
+
+battery=(
+    update_freq=120
+    script="$PLUGIN_DIR/battery.sh"
+)
+sketchybar --add item battery right --set battery "${battery[@]}" \
+    --subscribe battery system_woke power_source_change
+
+
+volume=(
+    script="$PLUGIN_DIR/volume.sh"
+)
+sketchybar --add item volume right --set volume "${volume[@]}" \
+   --subscribe volume volume_change
+
+
+# keyboard layout
+keyboard=(
+    script="$PLUGIN_DIR/keyboard.sh"
+)
+sketchybar --add item keyboard right --set keyboard "${keyboard[@]}" \
+    --add event keyboard_change "AppleSelectedInputSourcesChangedNotification" \
+    --subscribe keyboard keyboard_change
+
+
+sketchybar --update

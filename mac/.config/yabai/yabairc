@@ -2,6 +2,7 @@
 
 sudo yabai --load-sa
 
+yabai -m config external_bar all:32:0
 yabai -m config top_padding 8
 yabai -m config bottom_padding 8
 yabai -m config left_padding 8
@@ -32,3 +33,7 @@ yabai -m signal --add event=application_terminated action="yabai -m query --wind
 
 # focus window on space change
 yabai -m signal --add event=space_changed action='yabai -m window --focus $(yabai -m query --windows --space | jq -r '\''[.[]|select(."is-visible")][0].id'\'')'
+
+# notify sketchybar on window changes
+yabai -m signal --add event=window_focused action="sketchybar --trigger window_focused"
+yabai -m signal --add event=window_title_changed action="sketchybar --trigger title_changed"
