@@ -9,3 +9,6 @@ defaults write -g ApplePressAndHoldEnabled -bool false
 
 # disable annoying inline text popup (caps lock / kb layout indicator)
 sudo defaults write /Library/Preferences/FeatureFlags/Domain/UIKit.plist redesigned_text_cursor -dict-add Enabled -bool false
+
+# disable funny window opening animation
+defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
