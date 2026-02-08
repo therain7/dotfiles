@@ -1,5 +1,6 @@
 # caps lock is mapped to ralt
 ralt - return : open -ga Ghostty $HOME
+ralt + lshift - return : open -ga Ghostty /usr/local/bin/thing
 
 # disable "hide window" shortcut
 cmd - h : true
