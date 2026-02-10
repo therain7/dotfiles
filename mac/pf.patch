@@ -1,0 +1,17 @@
+--- /System/Library/Templates/Data/private/etc/pf.conf	2025-11-22 16:49:28
++++ /etc/pf.conf	2026-02-10 17:47:25
+@@ -20,8 +20,14 @@
+ # com.apple anchor point
+ #
+ scrub-anchor "com.apple/*"
++
+ nat-anchor "com.apple/*"
++nat on en0 inet from 192.168.64.0/24 to any -> (en0:0)
++
+ rdr-anchor "com.apple/*"
++rdr pass on lo0 inet proto udp from any to 127.0.0.1 port 53 -> 127.0.0.1 port 53111
++rdr pass on lo0 inet proto tcp from any to 127.0.0.1 port 53 -> 127.0.0.1 port 53111
++
+ dummynet-anchor "com.apple/*"
+ anchor "com.apple/*"
+ load anchor "com.apple" from "/etc/pf.anchors/com.apple"
