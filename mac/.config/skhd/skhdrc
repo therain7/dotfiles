@@ -48,3 +48,5 @@ ralt + lshift - space : yabai -m window --toggle float
 ralt - f : yabai -m window --toggle windowed-fullscreen
 
 ralt - p : [[ $(yabai -m config mouse_follows_focus) = "off" ]] && yabai -m config mouse_follows_focus on || yabai -m config mouse_follows_focus off
+
+ralt - 0x2A : blueutil --connect airpods
