@@ -1,0 +1,19 @@
+--- /usr/share/X11/xkb/symbols/pc	2025-09-30 23:59:37.000000000 +0300
++++ .xkb/symbols/pc	2026-04-26 22:00:28.139866803 +0300
+@@ -28,14 +28,12 @@
+ 
+     modifier_map Shift   { Shift_L, Shift_R };
+     modifier_map Lock    { Caps_Lock };
+-    modifier_map Control { Control_L, Control_R };
+     modifier_map Mod1    { Alt_L, Alt_R, Meta_L, Meta_R };
+     modifier_map Mod2    { Num_Lock };
+     modifier_map Mod4    { Super_L, Super_R };
+ 
+-    // Six fake keys for virtual<->real modifiers mapping:
+-    key <LVL3> {[  ISO_Level3_Shift  ]};
+-    modifier_map Mod5  { <LVL3> };
++    modifier_map Control { Control_L };
++    modifier_map Mod5  { Control_R };
+ 
+     key <LVL5> {[  ISO_Level5_Shift  ]};
+     modifier_map Mod3  { <LVL5> };
