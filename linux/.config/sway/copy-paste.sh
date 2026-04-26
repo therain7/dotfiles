@@ -8,7 +8,7 @@ esac
 
 app=$(swaymsg -t get_tree | jq -r '.. | select(.type?) | select(.focused==true) | .app_id')
 
-if [[ $app == "Alacritty" ]]; then
+if [[ $app == "com.mitchellh.ghostty" ]]; then
    wtype -M ctrl -M shift -P $key
 else
    wtype -M ctrl -P $key

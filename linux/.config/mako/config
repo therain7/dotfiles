@@ -1,3 +1,8 @@
-font=RobotoMono Nerd Font 14
-background-color=#1e1e2e
-border-color=#f2cdcd
+font=Hack Nerd Font 14
+background-color=#1e1e2e80
+
+border-size=0
+border-radius=16
+
+padding=20
+margin=0,10,8,10

@@ -1,32 +1,17 @@
 configuration {
-  kb-accept-entry: "Return,KP_Enter";
-  kb-remove-to-eol: "";
-  kb-row-down: "J,Ctrl+j,Alt+j,Down";
-  kb-row-up: "K,Ctrl+k,Alt+k,Up";
-
   modi: "drun,powermenu:~/.config/rofi/powermenu.lua";
 
-  me-accept-entry: "MousePrimary";
-  me-select-entry: "";
-  show-icons: true;
-  icon-theme: "Papirus";
-  application-fallback-icon: "run-build";
+  kb-accept-entry: "Return";
+  kb-remove-to-eol: "";
+  kb-row-down: "J,Ctrl+j";
+  kb-row-up: "K,Ctrl+k";
 
-  drun-display-format: " {name} ";
-  matching: "fuzzy";
-  scroll-method: 0;
-  disable-history: false;
-
-  display-drun: "Apps";
-  display-powermenu: "Power";
+  show-icons: false;
+  drun-display-format: "{name}";
 
   sort: true;
+  matching: "fuzzy";
   sorting-method: "fzf";
-
-  timeout {
-    action: "kb-cancel";
-    delay: 30;
-  }
 }
 
 @theme "style.rasi"

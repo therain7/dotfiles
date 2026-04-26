@@ -1,30 +1,26 @@
-@import "mocha.css";
+@define-color white #ffffff;
+@define-color red #f38ba8;
 
 * {
-  font-family: RobotoMono Nerd Font;
-  font-size: 14px;
-  font-weight: 500;
+  font-family: Hack Nerd Font;
+  font-size: 15px;
+  font-weight: normal;
 }
 
 window#waybar {
-  background-color: @base;
-  color: @rosewater;
+  color: @white;
+  background-color: transparent;
 }
 
 button {
   border: none;
-  border-radius: 0;
+  box-shadow: none;
+  text-shadow: none;
+  background: none;
 }
-
-button:hover {
-  box-shadow: inherit;
-  text-shadow: inherit;
-  background: inherit;
-}
-
 
 #workspaces button {
-  color: @rosewater;
+  color: @white;
   padding: 0 4px;
 }
 
@@ -35,7 +31,6 @@ button:hover {
 #workspaces button.urgent {
   background-color: @red;
 }
-
 
 .modules-left > widget > * {
   margin-right: 8px;
@@ -50,10 +45,9 @@ button:hover {
   margin-bottom: 0;
 }
 
-
 widget > * {
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin-top: 10px;
+  margin-bottom: 2px;
 }
 
 .modules-left > widget:first-child > * {
@@ -64,13 +58,8 @@ widget > * {
   margin-right: 8px;
 }
 
-
 tooltip {
   border: none;
-  border-radius: 0;
-  background: @surface0;
-}
-
-tooltip label {
-  color: @rosewater
+  border-radius: 16;
+  background: rgba(30, 30, 46, .8);
 }

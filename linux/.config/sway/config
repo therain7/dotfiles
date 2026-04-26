@@ -21,6 +21,7 @@ exec autotiling-rs
 exec clipse -listen
 exec mako
 exec lxpolkit
+exec alacritty --daemon
 
 input {
   type:touchpad {
@@ -37,10 +38,10 @@ floating_modifier $mod normal
 for_window [title="clipse-alacritty"] floating enable, resize set 80ppt 80ppt, move position center
 
 bindsym --to-code {
-  $mod+Return exec "alacritty msg create-window || alacritty"
+  $mod+Return exec ghostty +new-window
   $mod+space exec rofi -show drun | swaymsg
   $mod+q kill
-  $mod+v exec ~/.config/sway/clipse.sh
+  $mod+v exec alacritty msg create-window -T clipse-alacritty -e clipse
 
   $mod+backslash exec ~/.config/sway/airpods.sh
 
@@ -136,21 +137,18 @@ mode $screenshot {
 bindsym --to-code $mod+x mode $screenshot
 
 bar swaybar_command waybar
-default_border pixel 2
-default_floating_border pixel 2
-smart_borders on
+
+default_border none
+default_floating_border none
 gaps inner 8
 
-set {
-  $accent #f2cdcd
-  $red #f38ba8
-  $dark #313244
-}
+corner_radius 16
+blur enable
+blur_passes 4
+blur_radius 4
 
-client.focused          $accent $accent $dark $accent $accent
-client.focused_inactive $dark $dark $accent $dark $dark
-client.unfocused        $dark $dark $accent $dark $dark
-client.urgent           $red $red $accent $red $red
+layer_effects "notifications" blur enable; blur_ignore_transparent enable
+layer_effects "rofi" blur enable; blur_ignore_transparent enable
 
 output * {
   bg ~/.config/wallpaper fill
@@ -162,11 +160,6 @@ output "LG Electronics LG HDR 4K 0x00028A6C" {
 
 output "Acer Technologies CB272U E3 R40604F524209" {
   mode "2560x1440@99.946Hz"
-}
-
-output "Acer Technologies CB242Y D3 54030C1954232" {
-  mode "1920x1080@100.087Hz"
-  pos 0 0
 }
 
 include /etc/sway/config.d/*
