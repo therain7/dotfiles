@@ -3,7 +3,7 @@ git:
     - colorArg: always
       pager: delta --dark --paging=never
 customCommands:
-  - key: "<c-P>"
+  - key: "<meta+p>"
     description: "Force push to a specific remote repository"
     context: "global"
     loadingText: "Pushing ..."
