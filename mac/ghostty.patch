@@ -1,20 +1,40 @@
-From 5949ee9ea7db572527c591682f4a4aa73e387454 Mon Sep 17 00:00:00 2001
+From 93cbadcd718a8b90cd8ad015ae7561c99f080e08 Mon Sep 17 00:00:00 2001
 From: Andrei <therain.i@yahoo.com>
-Date: Thu, 5 Feb 2026 01:39:55 +0300
+Date: Sat, 30 May 2026 17:23:34 +0300
 Subject: [PATCH] force all new windows to be tiny and almost invisible on
  spawn
 
 this reduces flickering on macos tiling wm setup as new windows
 are not really visible before they're picked up by WM
 ---
- .../Terminal/TerminalController.swift         | 186 +-----------------
- 1 file changed, 4 insertions(+), 182 deletions(-)
+ .../Terminal/TerminalController.swift         | 289 +-----------------
+ .../Terminal/TerminalRestorable.swift         |   9 +
+ 2 files changed, 21 insertions(+), 277 deletions(-)
 
 diff --git a/macos/Sources/Features/Terminal/TerminalController.swift b/macos/Sources/Features/Terminal/TerminalController.swift
-index 2e6021f56..d23cdaf67 100644
+index 56b0b40ad..852f19690 100644
 --- a/macos/Sources/Features/Terminal/TerminalController.swift
 +++ b/macos/Sources/Features/Terminal/TerminalController.swift
-@@ -201,77 +201,9 @@ class TerminalController: BaseTerminalController, TabGroupCloseCoordinator.Contr
+@@ -194,18 +194,6 @@ class TerminalController: BaseTerminalController, TabGroupCloseCoordinator.Contr
+     // of each other.
+     private static var lastCascadePoint = NSPoint(x: 0, y: 0)
+ 
+-    private static func applyCascade(to window: NSWindow, hasFixedPos: Bool) {
+-        if hasFixedPos { return }
+-
+-        if all.count > 1 {
+-            lastCascadePoint = window.cascadeTopLeft(from: lastCascadePoint)
+-        } else {
+-            // We assume the window frame is already correct at this point,
+-            // so we pass .zero to let cascade use the current frame position.
+-            lastCascadePoint = window.cascadeTopLeft(from: .zero)
+-        }
+-    }
+-
+     // The preferred parent terminal controller.
+     static var preferredParent: TerminalController? {
+         all.first {
+@@ -227,77 +215,12 @@ class TerminalController: BaseTerminalController, TabGroupCloseCoordinator.Contr
      ) -> TerminalController {
          let c = TerminalController.init(ghostty, withBaseConfig: baseConfig)
  
@@ -22,27 +42,25 @@ index 2e6021f56..d23cdaf67 100644
 -        // otherwise the focused terminal, otherwise an arbitrary one.
 -        let parent: NSWindow? = explicitParent ?? preferredParent?.window
 -
--        if let parent {
--            if parent.styleMask.contains(.fullScreen) {
--                // If our previous window was fullscreen then we want our new window to
--                // be fullscreen. This behavior actually doesn't match the native tabbing
--                // behavior of macOS apps where new windows create tabs when in native
--                // fullscreen but this is how we've always done it. This matches iTerm2
--                // behavior.
+-        if let parent, parent.styleMask.contains(.fullScreen) {
+-            // If our previous window was fullscreen then we want our new window to
+-            // be fullscreen. This behavior actually doesn't match the native tabbing
+-            // behavior of macOS apps where new windows create tabs when in native
+-            // fullscreen but this is how we've always done it. This matches iTerm2
+-            // behavior.
+-            c.toggleFullscreen(mode: .native)
+-        } else if let fullscreenMode = ghostty.config.windowFullscreen {
+-            switch fullscreenMode {
+-            case .native:
+-                // Native has to be done immediately so that our stylemask contains
+-                // fullscreen for the logic later in this method.
 -                c.toggleFullscreen(mode: .native)
--            } else if ghostty.config.windowFullscreen {
--                switch (ghostty.config.windowFullscreenMode) {
--                case .native:
--                    // Native has to be done immediately so that our stylemask contains
--                    // fullscreen for the logic later in this method.
--                    c.toggleFullscreen(mode: .native)
 -
--                case .nonNative, .nonNativeVisibleMenu, .nonNativePaddedNotch:
--                    // If we're non-native then we have to do it on a later loop
--                    // so that the content view is setup.
--                    DispatchQueue.main.async {
--                        c.toggleFullscreen(mode: ghostty.config.windowFullscreenMode)
--                    }
+-            case .nonNative, .nonNativeVisibleMenu, .nonNativePaddedNotch:
+-                // If we're non-native then we have to do it on a later loop
+-                // so that the content view is setup.
+-                DispatchQueue.main.async {
+-                    c.toggleFullscreen(mode: fullscreenMode)
 -                }
 -            }
 -        }
@@ -50,21 +68,23 @@ index 2e6021f56..d23cdaf67 100644
 -        // We're dispatching this async because otherwise the lastCascadePoint doesn't
 -        // take effect. Our best theory is there is some next-event-loop-tick logic
 -        // that Cocoa is doing that we need to be after.
--        DispatchQueue.main.async {
++        // Show at ~0 size; the external WM handles positioning/sizing.
+         DispatchQueue.main.async {
+             c.showWindow(self)
+-
 -            // Only cascade if we aren't fullscreen.
 -            if let window = c.window {
--                if (!window.styleMask.contains(.fullScreen)) {
--                    Self.lastCascadePoint = window.cascadeTopLeft(from: Self.lastCascadePoint)
+-                if !window.styleMask.contains(.fullScreen) {
+-                    let hasFixedPos = c.derivedConfig.windowPositionX != nil && c.derivedConfig.windowPositionY != nil
+-                    Self.applyCascade(to: window, hasFixedPos: hasFixedPos)
 -                }
 -            }
 -
--            c.showWindow(self)
--
 -            // All new_window actions force our app to be active, so that the new
 -            // window is focused and visible.
--            NSApp.activate(ignoringOtherApps: true)
--        }
--
+             NSApp.activate(ignoringOtherApps: true)
+         }
+ 
 -        // Setup our undo
 -        if let undoManager = c.undoManager {
 -            undoManager.setActionName("New Window")
@@ -89,13 +109,66 @@ index 2e6021f56..d23cdaf67 100644
 -                }
 -            }
 -        }
-+        c.window?.setFrame(.init(x: 0, y: 0, width: 0, height: 0), display: false)
-+        c.showWindow(self)
-+        NSApp.activate(ignoringOtherApps: true)
- 
+-
          return c
      }
-@@ -281,117 +213,7 @@ class TerminalController: BaseTerminalController, TabGroupCloseCoordinator.Contr
+ 
+@@ -316,52 +239,10 @@ class TerminalController: BaseTerminalController, TabGroupCloseCoordinator.Contr
+     ) -> TerminalController {
+         let c = TerminalController.init(ghostty, withSurfaceTree: tree)
+ 
+-        // Calculate the target frame based on the tree's view bounds
+-        let treeSize: CGSize? = tree.root?.viewBounds()
+-
++        // Show at ~0 size; the external WM handles positioning/sizing.
+         DispatchQueue.main.async {
+             c.showWindow(self)
+-            if let window = c.window {
+-                // If we have a tree size, resize the window's content to match
+-                if let treeSize, treeSize.width > 0, treeSize.height > 0 {
+-                    window.setContentSize(treeSize)
+-                    window.constrainToScreen()
+-                }
+-
+-                if !window.styleMask.contains(.fullScreen) {
+-                    if let position {
+-                        window.setFrameTopLeftPoint(position)
+-                        window.constrainToScreen()
+-                    } else {
+-                        let hasFixedPos = c.derivedConfig.windowPositionX != nil && c.derivedConfig.windowPositionY != nil
+-                        Self.applyCascade(to: window, hasFixedPos: hasFixedPos)
+-                    }
+-                }
+-            }
+-        }
+-
+-        // Setup our undo
+-        if let undoManager = c.undoManager {
+-            undoManager.setActionName("New Window")
+-            undoManager.registerUndo(
+-                withTarget: c,
+-                expiresAfter: c.undoExpiration
+-            ) { target in
+-                undoManager.disableUndoRegistration {
+-                    if confirmUndo {
+-                        target.closeWindow(nil)
+-                    } else {
+-                        target.closeWindowImmediately()
+-                    }
+-                }
+-
+-                undoManager.registerUndo(
+-                    withTarget: ghostty,
+-                    expiresAfter: target.undoExpiration
+-                ) { ghostty in
+-                    _ = TerminalController.newWindow(ghostty, tree: tree)
+-                }
+-            }
++            NSApp.activate(ignoringOtherApps: true)
+         }
+ 
+         return c
+@@ -372,123 +253,8 @@ class TerminalController: BaseTerminalController, TabGroupCloseCoordinator.Contr
          from parent: NSWindow? = nil,
          withBaseConfig baseConfig: Ghostty.SurfaceConfiguration? = nil
      ) -> TerminalController? {
@@ -125,7 +198,7 @@ index 2e6021f56..d23cdaf67 100644
 -
 -        // If the parent is miniaturized, then macOS exhibits really strange behaviors
 -        // so we have to bring it back out.
--        if (parent.isMiniaturized) { parent.deminiaturize(self) }
+-        if parent.isMiniaturized { parent.deminiaturize(self) }
 -
 -        // If our parent tab group already has this window, macOS added it and
 -        // we need to remove it so we can set the correct order in the next line.
@@ -140,21 +213,21 @@ index 2e6021f56..d23cdaf67 100644
 -        }
 -
 -        // If we don't allow tabs then we create a new window instead.
--        if (window.tabbingMode != .disallowed) {
+-        if window.tabbingMode != .disallowed {
 -            // Add the window to the tab group and show it.
 -            switch ghostty.config.windowNewTabPosition {
 -            case "end":
 -                // If we already have a tab group and we want the new tab to open at the end,
 -                // then we use the last window in the tab group as the parent.
 -                if let last = parent.tabGroup?.windows.last {
--                    last.addTabbedWindow(window, ordered: .above)
+-                    last.addTabbedWindowSafely(window, ordered: .above)
 -                } else {
 -                    fallthrough
 -                }
 -
 -            case "current": fallthrough
 -            default:
--                parent.addTabbedWindow(window, ordered: .above)
+-                parent.addTabbedWindowSafely(window, ordered: .above)
 -            }
 -        }
 -
@@ -165,7 +238,8 @@ index 2e6021f56..d23cdaf67 100644
 -            // Only cascade if we aren't fullscreen and are alone in the tab group.
 -            if !window.styleMask.contains(.fullScreen) &&
 -                window.tabGroup?.windows.count ?? 1 == 1 {
--                Self.lastCascadePoint = window.cascadeTopLeft(from: Self.lastCascadePoint)
+-                let hasFixedPos = controller.derivedConfig.windowPositionX != nil && controller.derivedConfig.windowPositionY != nil
+-                Self.applyCascade(to: window, hasFixedPos: hasFixedPos)
 -            }
 -
 -            controller.showWindow(self)
@@ -191,9 +265,14 @@ index 2e6021f56..d23cdaf67 100644
 -                withTarget: controller,
 -                expiresAfter: controller.undoExpiration
 -            ) { target in
--                // Close the tab when undoing
--                undoManager.disableUndoRegistration {
--                    target.closeTab(nil)
+-                // Close the tab when undoing. We do this in a DispatchQueue because
+-                // for some people on macOS Tahoe this caused a crash and the queue
+-                // fixes it.
+-                // https://github.com/ghostty-org/ghostty/pull/9512
+-                DispatchQueue.main.async {
+-                    undoManager.disableUndoRegistration {
+-                        target.closeTab(nil)
+-                    }
 -                }
 -
 -                // Register redo action
@@ -210,10 +289,99 @@ index 2e6021f56..d23cdaf67 100644
 -        }
 -
 -        return controller
++        // Tabs unused with the external WM; just make a new window.
 +        return newWindow(ghostty, withBaseConfig: baseConfig, withParent: parent)
      }
  
-     //MARK: - Methods
+     // MARK: - Methods
+@@ -949,29 +715,13 @@ class TerminalController: BaseTerminalController, TabGroupCloseCoordinator.Contr
+     convenience init(_ ghostty: Ghostty.App, with undoState: UndoState) {
+         self.init(ghostty, withSurfaceTree: undoState.surfaceTree)
+ 
+-        // Show the window and restore its frame
++        // Don't restore undoState.frame; the external WM handles sizing/positioning.
+         showWindow(nil)
+         if let window {
+-            window.setFrame(undoState.frame, display: true)
+             if let terminalWindow = window as? TerminalWindow {
+                 terminalWindow.tabColor = undoState.tabColor
+             }
+ 
+-            // If we have a tab group and index, restore the tab to its original position
+-            if let tabGroup = undoState.tabGroup,
+-               let tabIndex = undoState.tabIndex {
+-                if tabIndex < tabGroup.windows.count {
+-                    // Find the window that is currently at that index
+-                    let currentWindow = tabGroup.windows[tabIndex]
+-                    currentWindow.addTabbedWindowSafely(window, ordered: .below)
+-                } else {
+-                    tabGroup.windows.last?.addTabbedWindowSafely(window, ordered: .above)
+-                }
+-
+-                // Make it the key window
+-                window.makeKeyAndOrderFront(nil)
+-            }
+-
+             // Restore focus to the previously focused surface
+             if let focusedUUID = undoState.focusedSurface,
+                let focusTarget = surfaceTree.first(where: { $0.id == focusedUUID }) {
+@@ -1085,30 +835,15 @@ class TerminalController: BaseTerminalController, TabGroupCloseCoordinator.Contr
+         syncAppearance(.init(config))
+     }
+ 
+-    /// Setup correct window frame before showing the window
++    /// Collapse every window to ~0 size before showing; the external WM places it.
+     override func showWindow(_ sender: Any?) {
+         guard let terminalWindow = window as? TerminalWindow else { return }
+ 
+-        // Set the initial window position. This must happen after the window
+-        // is fully set up (content view, toolbar, default size) so that
+-        // decorations added by subclass awakeFromNib (e.g. toolbar for tabs
+-        // style) don't change the frame after the position is restored.
+-        let originChanged = terminalWindow.setInitialWindowPosition(
+-            x: derivedConfig.windowPositionX,
+-            y: derivedConfig.windowPositionY,
+-        )
+-        let restored = LastWindowPosition.shared.restore(
+-            terminalWindow,
+-            origin: !originChanged,
+-            size: defaultSize == nil,
+-        )
+-
+-        // If nothing is changed for the frame,
+-        // we should center the window
+-        if !originChanged, !restored {
+-            // This doesn't work in `windowDidLoad` somehow
+-            terminalWindow.center()
+-        }
++        terminalWindow.contentMinSize = .zero
++        terminalWindow.minSize = .zero
++        terminalWindow.setFrame(
++            .init(x: 0, y: 0, width: 0, height: 0),
++            display: false)
+ 
+         super.showWindow(sender)
+     }
+diff --git a/macos/Sources/Features/Terminal/TerminalRestorable.swift b/macos/Sources/Features/Terminal/TerminalRestorable.swift
+index aab51f6bd..8a05d679c 100644
+--- a/macos/Sources/Features/Terminal/TerminalRestorable.swift
++++ b/macos/Sources/Features/Terminal/TerminalRestorable.swift
+@@ -121,6 +121,15 @@ class TerminalWindowRestoration: NSObject, NSWindowRestoration {
+             return
+         }
+ 
++        // Restoration doesn't call showWindow; collapse to ~0 for the external WM.
++        if let terminalWindow = window as? TerminalWindow {
++            terminalWindow.contentMinSize = .zero
++            terminalWindow.minSize = .zero
++            terminalWindow.setFrame(
++                .init(x: 0, y: 0, width: 0, height: 0),
++                display: false)
++        }
++
+         // Restore our tab color
+         (window as? TerminalWindow)?.tabColor = state.tabColor
+ 
 -- 
-2.52.0
+2.54.0
 
