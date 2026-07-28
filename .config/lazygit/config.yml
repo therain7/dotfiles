@@ -1,7 +1,11 @@
 git:
   pagers:
     - colorArg: always
-      pager: delta --dark --paging=never
+      pager: delta --paging=never
+    - colorArg: always
+      pager: delta --side-by-side --paging=never --width=200
+    - useExternalDiffGitConfig: true
+
 customCommands:
   - key: "<meta+p>"
     description: "Force push to a specific remote repository"
